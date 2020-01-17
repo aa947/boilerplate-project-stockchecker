@@ -4,6 +4,8 @@ var express     = require('express');
 var bodyParser  = require('body-parser');
 var expect      = require('chai').expect;
 var cors        = require('cors');
+const helmet = require('helmet')
+
 
 var apiRoutes         = require('./routes/api.js');
 var fccTestingRoutes  = require('./routes/fcctesting.js');
@@ -14,6 +16,14 @@ var app = express();
 app.use('/public', express.static(process.cwd() + '/public'));
 
 app.use(cors({origin: '*'})); //For FCC testing purposes only
+
+//security
+app.use(helmet.contentSecurityPolicy({
+  directives: {
+    defaultSrc: ["'self'"],
+    styleSrc: ["'self'"]
+  }
+}))
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
