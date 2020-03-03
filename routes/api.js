@@ -1,10 +1,4 @@
-/*
-*
-*
-*       Complete the API routing below
-*
-*
-*/
+
 
 'use strict';
 
@@ -22,7 +16,7 @@ module.exports = function (app) {
 
   app.route('/api/stock-prices')
     .get(function (req, res){
-      let stock = req.query.stock;
+      let stock=req.query.stock;
       const clientIp = requestIp.getClientIp(req); 
      
 
@@ -32,63 +26,68 @@ module.exports = function (app) {
 
         //check if only one stock is provided
         if (typeof(stock)=='string'){
+          stock = req.query.stock.toUpperCase();
             
-           if(req.query.like){
-             db.collection('stocks').findOne({symbol: stock},(err, doc)=>{
-               if(doc.ip.includes(clientIp)){ return; }
-               else{
-                 db.collection('stocks').update({symbol: stock}, { $push: {ip : clientIp}, $inc: {likes: 1} }) 
-                 }
-             } )
+          //  if(req.query.like){
+          //    db.collection('stocks').findOne({symbol: stock},(err, doc)=>{
+          //      if(doc.ip.includes(clientIp)){ return; }
+          //      else{
+          //        db.collection('stocks').update({symbol: stock}, { $push: {ip : clientIp}, $inc: {likes: 1} }) 
+          //        }
+          //    } )
                 
-             }
+          //    }
 
               db.collection('stocks').find({ symbol: stock }).toArray((err, data)=>{
+               // console.log(data)
                 if(err) return console.log(err);
                 let new_data =[];
                 data.map((doc)=>{ 
                   let id = doc._id;
                 let sstock = doc.symbol;
                 let price = doc.latestPrice;
-                let likes =doc.likes;
-                  new_data.push({ stock: sstock, price: price, likes: likes })
+               // let likes =doc.likes;
+                  new_data.push({ stock: sstock, price: price })
                 });
-               res.json({ stockData: new_data});
+              //  res.send(JSON.stringify(data[0], undefined, 4));
+              res.json(data[0]);
               })
 
         //rnd if string
       }
-
       //check if 2 stocks are provided
       else if( typeof(stock)=='object' ){
-        if(req.query.like){
-          stock.map( (elem) => {
-          db.collection('stocks').findOne({symbol: elem},(err, doc)=>{
-            if(doc.ip.includes(clientIp)){ return; }
-            else{
-              db.collection('stocks').update({symbol: elem}, { $push: {ip : clientIp}, $inc: {likes: 1} }) 
-              }
-          } )
-        })
-          //end like handler   
-          }
+        // if(req.query.like){
+        //   stock.map( (elem) => {
+        //   db.collection('stocks').findOne({symbol: elem},(err, doc)=>{
+        //     if(doc.ip.includes(clientIp)){ return; }
+        //     else{
+        //       db.collection('stocks').update({symbol: elem}, { $push: {ip : clientIp}, $inc: {likes: 1} }) 
+        //       }
+        //   } )
+        // })
+        //   //end like handler   
+        //   }
+         
+        var stock1 = stock[0].toUpperCase();
+        var stock2  = stock[1].toUpperCase();
     
-        db.collection('stocks').find( { $or:[{ symbol: stock[0]}, { symbol: stock[1] }] }).toArray((err, data)=>{
+        db.collection('stocks').find( { $or:[{ symbol: stock1}, { symbol: stock2 }] }).toArray((err, data)=>{
           if(err) return console.log(err);
-          //console.log(data);
+          console.log(data);
           let new_data = [];
           data.map((doc)=>{ 
             let id = doc._id;
           let sstock = doc.symbol;
           let price = doc.latestPrice;
-          let likes =doc.likes;
-            new_data.push({ stock: sstock, price: price, likes: likes })
+          // let likes =doc.likes;
+            new_data.push({ stock: sstock, price: price })
           });
-          let x = new_data[0].likes - new_data[1].likes;
-          let y = new_data[1].likes - new_data[0].likes;
-          new_data[0].likes = x;
-          new_data[1].likes = y;
-          res.json({stockData_no: new_data});
+          // let x = new_data[0].likes - new_data[1].likes;
+          // let y = new_data[1].likes - new_data[0].likes;
+          // new_data[0].likes = x;
+          // new_data[1].likes = y;
+          res.json(new_data);
         })
 
     //end if stock object  
