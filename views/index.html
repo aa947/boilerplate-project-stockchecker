@@ -1,59 +1,112 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>Welcome to HyperDev!</title>
-    <meta name="description" content="A cool thing made with HyperDev">
-    <link id="favicon" rel="icon" href="https://hyperdev.com/favicon-app.ico" type="image/x-icon">
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="./public/style.css">
-  </head>
-  <body>
-    <header>
-      <h1>
-        ISQA_5 - Nasdaq Stock Price Checker
-      </h1>
-    </header>
-    <div id='userstories' style='margin-left: 5%; margin-top: 5%'>
-      <h3>User Stories</h3>
-      <ol>
-        <li>Set the content security policies to only allow loading of scripts and css from your server.</li>
-        <li>I can <b>GET</b> <code>/api/stock-prices</code> with form data containing a Nasdaq <i>stock</i> ticker and recieve back an object <i>stockData</i>.</li>
-        <li>In <i>stockData</i>, I can see the <i>stock</i>(string, the ticker), <i>price</i>(decimal in string format), and <i>likes</i>(int).</li>
-        <li>I can also pass along field <i>like</i> as <b>true</b>(boolean) to have my like added to the stock(s). Only 1 like per ip should be accepted.</li>
-        <li>If I pass along 2 stocks, the return object will be an array with both stock's info but instead of <i>likes</i>, it will display <i>rel_likes</i>(the difference between the likes on both) on both.</li>
-        <li>A good way to receive current price is the following external API(replacing 'GOOG' with your stock): <code>https://finance.google.com/finance/info?q=NASDAQ%3aGOOG</code></li>
-        <li>All 5 functional tests are complete and passing.</li>
-      </ol>
-      <h3>Example usage:</h3>
-      <code>/api/stock-prices?stock=goog</code><br>
-      <code>/api/stock-prices?stock=goog&amp;like=true</code><br>
-      <code>/api/stock-prices?stock=goog&amp;stock=msft</code><br>
-      <code>/api/stock-prices?stock=goog&amp;stock=msft&amp;like=true</code><br>
-      <h3>Example return:</h3>
-      <code>{"stockData":{"stock":"GOOG","price":"786.90","likes":1}}</code><br>
-      <code>{"stockData":[{"stock":"MSFT","price":"62.30","rel_likes":-1},{"stock":"GOOG","price":"786.90","rel_likes":1}]}</code>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<title>S-check API</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	<!-- Bootstrap core CSS -->
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+	 crossorigin="anonymous">
+	<!-- 
+  fancy box
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" /> -->
+
+ <link rel="stylesheet" href="/public/style.css">
+
+
+	<!-- jquery slim -->
+	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    
+</head>
+
+<body>
+
+	<!-- Navigation -->
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
+		<div class="container">
+			<a class="navbar-brand" href="/">
+				<img src="https://dl.dropbox.com/s/ef6bd77m47iz2w6/mw100.png?dl=0" width="50px" />
+       <h3 style="display:inline; padding-left:3%; " > Stock Checker API By Ahmad Ali </h3>
+      </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="nav navbar-nav">
+           
+             
+            <!-- <li class="nav-item active">
+              <a class="nav-link" href="#userstories"> About
+                <span class="sr-only">(current)</span>
+              </a>
+            </li> -->
+        
+        </ul>
+         <ul class="navbar-nav ml-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="#about"> About
+              <span class="sr-only">(current)</span>
+            </a>
+          </li>
+           <li class="nav-item active">
+            <a class="nav-link" href="http://ahmad-ali.co.uk/" target="_blank" > My Portfolio
+              <span class="sr-only">(current)</span>
+            </a>
+          </li>
+          </ul>
+
+       
+      </div>
     </div>
+  </nav>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12 text-center">
+     
+
+
+
+  <!-- Page Content -->
+
+      <div class="container">
+
+
     <hr style='margin: 50px'>
     <div id='testui' style='margin-left: 5%'>
-      <h2 style="text-align: left">Front-End:</h2>
-      <h3>Get single price and total likes</h3>
-      <form id="testForm2" class="border">
-        <input type="text" name="stock" placeholder="goog" style="width: 100px" required=''>
-        <input type="checkbox" name="like" value=true> Like?<br>
-        <button type="submit">Get Price!</button>
+      <!-- <h2 style="text-align: left">Front-End:</h2> -->
+      <h3>Get stock price </h3>
+      <br/>
+      <form id="testForm2" style="display:inline;" >
+        <input type="text" name="stock" placeholder="goog"  width="40%"  required=''>
+      
+        <button class="btn btn-primary" type="submit">Get Price!</button>
       </form>
-      <h3>Compare and get relative likes</h3>
-      <form id="testForm" class="border">
-        <input type="text" name="stock" placeholder="goog" style="width: 100px" required=''>
-        <input type="text" name="stock" placeholder="msft" style="width: 100px" required=''>
-        <input type="checkbox" name="like" value=true> Like both?<br>
-        <button type="submit">Get Price!</button>
+<br/><br/><br/>
+<h3>
+<div style="display:block;"> <code id='jsonResult1'></code> </div> <h3>
+
+          <hr style='margin: 50px'>
+
+      <h3>Compare Prices of 2 stocks</h3>
+      <br />
+      <form id="testForm" >
+        <input type="text" name="stock" placeholder="goog" style="width: 30%" required=''>
+        <input type="text" name="stock" placeholder="msft" style="width: 30%" required=''>
+       
+        <button class="btn btn-primary" type="submit">Get Price!</button>
       </form>
-      <code id='jsonResult'></code>
+      <br/><br/><br/>
+<h3>
+<div style="display:block;"> <code id='jsonResult2'> </code> 
+<div>
+</h3>
     </div>
-    <hr style='margin: 50px; margin-top: 200px'>
+    <hr style='margin: 50px;'>
     <!-- Your web-app is https, so your scripts need to be too -->
     <script src="https://code.jquery.com/jquery-2.2.1.min.js"
             integrity="sha256-gvQgAFzTH6trSrAWoH1iPo9Xc96QxSZ3feW6kem+O00="
@@ -66,7 +119,7 @@
             type: 'get',
             data: $('#testForm').serialize(),
             success: function(data) {
-              $('#jsonResult').text(JSON.stringify(data));
+              $('#jsonResult2').text(JSON.stringify(data));
             }
           });
           e.preventDefault();
@@ -77,12 +130,53 @@
             type: 'get',
             data: $('#testForm2').serialize(),
             success: function(data) {
-              $('#jsonResult').text(JSON.stringify(data));
+              $('#jsonResult1').text(JSON.stringify(data));
             }
           });
           e.preventDefault();
         });
       });
    </script>
-  </body>
+
+
+   
+    <div id='userstories' style='margin-left: 5%; margin-top: 5%'>
+      <h3 id="about">In this project:</h3>
+      <ol>
+        <li>This is a basic mock stock checker</li>
+        <li><b>GET</b> request with form data containing a Nasdaq <i>stock</i> ticker and recieve back an object <i>stockData</i>.</li>
+        <li>In <i>stockData</i>, I can see the <i>stock</i>(string, the ticker), <i>price</i>(decimal in string format).</li>
+    
+        <li> pass along 2 stocks, the return object will be an array with both stock's info but instead of .</li>
+        <li>A good way to receive current price is the following external API(replacing 'GOOG' with your stock): <code>https://finance.google.com/finance/info?q=NASDAQ%3aGOOG</code></li>
+        
+      </ol>
+      <h3>Example usage:</h3>
+      <code>/api/stock-prices?stock=goog</code><br>
+            <code>/api/stock-prices?stock=goog&amp;stock=msft</code><br>
+     
+      <h3>Example return:</h3>
+      <code>{"stockData":{"stock":"GOOG","price":"786.90"}}</code><br>
+      <code>{"stockData":[{"stock":"MSFT","price":"62.30"},{"stock":"GOOG","price":"786.90"}]}</code>
+    </div>
+  
+
+
+   
+
+<!-- footer  -->
+<br /> <br /> <br />
+<hr />
+<p class="text-center"> &COPY; Ahmad Ali </p>
+
+<!-- Bootstrap core JavaScript -->
+
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+<!-- fancy box js -->
+<script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+</body>
+
 </html>
