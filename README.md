@@ -3,10 +3,10 @@
 
 ## S-check API - Stock Checker API with Node and MongoDB 
 
-### live at:
+## live at:
 https://boilerplate-project-stockchecker--ahmadali5.repl.co
 
-### In this project:
+## In this project:
 <p> In this project:
  <ol>
         <li>This is a basic mock stock checker</li>
@@ -22,11 +22,11 @@ https://boilerplate-project-stockchecker--ahmadali5.repl.co
 
 
 
-### video
+## video
 [![ S-check API - Stock Checker API with Node and MongoDB ](http://img.youtube.com/vi/ad5Ztkf5Kd0/0.jpg)](http://www.youtube.com/watch?v=ad5Ztkf5Kd0 " S-check API - Stock Checker API with Node and MongoDB ")
 
 
-### my Portfolio:
+## my Portfolio:
 http://www.ahmad-ali.co.uk/
 
 
